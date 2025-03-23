@@ -59,8 +59,9 @@ enum fstFileType {
     FST_FT_VERILOG             = 0,
     FST_FT_VHDL                = 1,
     FST_FT_VERILOG_VHDL        = 2,
+    FST_FT_FIRRTL              = 3,
 
-    FST_FT_MAX                 = 2
+    FST_FT_MAX                 = 3
 };
 
 enum fstBlockType {
@@ -150,7 +151,17 @@ enum fstVarType {
     FST_VT_SV_ENUM             = 28,    /* declare as appropriate type range */
     FST_VT_SV_SHORTREAL        = 29,    /* declare and emit same as FST_VT_VCD_REAL (needs to be emitted as double, not a float) */
 
-    FST_VT_MAX                 = 29     /* end of vartypes */
+    /* FIRRTL specific types */
+    FST_VT_FIRRTL_UINT         = 30,    /* FIRRTL UInt type */
+    FST_VT_FIRRTL_SINT         = 31,    /* FIRRTL SInt type */
+    FST_VT_FIRRTL_CLOCK        = 32,    /* FIRRTL Clock type */
+    FST_VT_FIRRTL_RESET        = 33,    /* FIRRTL Reset type */
+    FST_VT_FIRRTL_ASYNC_RESET  = 34,    /* FIRRTL AsyncReset type */
+    FST_VT_FIRRTL_ANALOG       = 35,    /* FIRRTL Analog type */
+    FST_VT_FIRRTL_FIXED        = 36,    /* FIRRTL Fixed type */
+    FST_VT_FIRRTL_INTERVAL     = 37,    /* FIRRTL Interval type */
+
+    FST_VT_MAX                 = 37     /* end of vartypes */
 };
 
 enum fstVarDir {
@@ -205,8 +216,9 @@ enum fstMiscType {
     FST_MT_VALUELIST   = 6,	/* use fstWriterSetValueList() to emit, followed by fstWriterCreateVar*() */
     FST_MT_ENUMTABLE   = 7,	/* use fstWriterCreateEnumTable() and fstWriterEmitEnumTableRef() to emit */
     FST_MT_UNKNOWN     = 8,
+    FST_MT_FIRRTL_TYPE = 9,     /* FIRRTL type information */
 
-    FST_MT_MAX         = 8
+    FST_MT_MAX         = 9
 };
 
 enum fstArrayType {
@@ -457,6 +469,19 @@ int             fstUtilityBinToEsc(unsigned char *d, const unsigned char *s, int
 int             fstUtilityEscToBin(unsigned char *d, unsigned char *s, int len);
 struct fstETab *fstUtilityExtractEnumTableFromString(const char *s);
 void 		fstUtilityFreeEnumTable(struct fstETab *etab); /* must use to free fstETab properly */
+
+
+/* FIRRTL specific structures */
+struct fstFirrtlType {
+    enum fstVarType base_type;
+    uint32_t width;           /* Width for UInt/SInt/Fixed */
+    uint32_t point;           /* Binary point for Fixed */
+    uint32_t interval;        /* Interval for Interval type */
+};
+
+/* FIRRTL specific functions */
+void fstWriterSetFirrtlType(void *ctx, fstHandle handle, struct fstFirrtlType *type);
+void fstWriterEmitFirrtlValueChange(void *ctx, fstHandle handle, const void *val, uint32_t len);
 
 
 #ifdef __cplusplus
