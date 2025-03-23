@@ -1,8 +1,8 @@
 CC = gcc
-CFLAGS = -Ilibfst -Wall -O2
+CFLAGS = -Iinclude/libfst -Wall -O2
 LDFLAGS = -lm -lz
 
-FST_SRCS = libfst/fstapi.c libfst/lz4.c libfst/fastlz.c
+FST_SRCS = include/libfst/fstapi.c include/libfst/lz4.c include/libfst/fastlz.c
 FST_OBJS = $(FST_SRCS:%.c=build/%.o)
 
 TARGET = build/fstdemo
@@ -12,7 +12,7 @@ OBJS = $(SRCS:%.c=build/%.o)
 all: build $(TARGET)
 
 build:
-	mkdir -p build/libfst
+	mkdir -p build/include/libfst
 
 $(TARGET): $(OBJS) $(FST_OBJS)
 	$(CC) -o $@ $^ $(LDFLAGS)

@@ -3,3 +3,24 @@ build/
 
 # FST files
 *.fst
+
+# IDE files
+.vscode/
+
+# clangd files
+compile_commands.json
+*/compile_commands.json
+
+# cache files
+.cache/
+
+# object files
+*.o
+
+# executable files
+parser/parse_gcd
+
+# generated files
+parser/lex.yy.cpp
+parser/syntax.cpp
+parser/syntax.hpp
