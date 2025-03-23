@@ -23,7 +23,7 @@ build/%.o: %.c
 clean:
 	rm -rf build
 
-run: $(TARGET)
+run: build $(TARGET)
 	./$(TARGET)
 
 .PHONY: all clean run
